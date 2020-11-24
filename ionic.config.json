@@ -1,0 +1,7 @@
+{
+  "name": "nx-news-ion",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Settings</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div id="container">
+    <ion-text>
+      <h3 class="mLmR">Attention!</h3>
+      <p class="mLmR">Credentials will be saved in localStorage, so <strong>do NOT use this appliation on public/shared devices</strong>. Your credentials could be leaked via devtools.</p>
+    </ion-text>
+    <ion-item>
+      <ion-label position="floating">Server-URL</ion-label>
+      <ion-input #ul type="url" [value]="url"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Username</ion-label>
+      <ion-input #un type="nickname" [value]="username"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Password</ion-label>
+      <ion-input #pw type="password"[value]="password" ></ion-input>
+    </ion-item>
+  </div>
+  <ion-button color="success" (click)="saveCredentials(ul.value, un.value, pw.value)" style="margin: 10px; float:right;">Save</ion-button>
+</ion-content>
