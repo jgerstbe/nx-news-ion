@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NewsService } from '../api/news.service';
 import { AlertController } from '@ionic/angular';
 import { Article } from '../api/article';
+import { ArticleListComponent } from '../article-list/article-list.component';
+import { LoadingController } from '@ionic/angular';
 
 @Component({
   selector: 'app-unread-articles',
@@ -10,10 +12,13 @@ import { Article } from '../api/article';
 })
 export class UnreadArticlesComponent implements OnInit {
   articles: Article[] = [];
+  @ViewChild('articleList', { static: false}) articleList: ArticleListComponent;
+  loadingSpinner: HTMLIonLoadingElement;
 
   constructor(
     private newsService: NewsService,
     public alertController: AlertController,
+    public loadingController: LoadingController,
   ) { }
 
   ngOnInit() {
@@ -21,9 +26,16 @@ export class UnreadArticlesComponent implements OnInit {
   }
 
   loadUnread() {
+    this.presentLoading();
     this.newsService.getUnreadArticles().subscribe(
-      data => this.articles = data,
-      error => this.presentErrorAlert(error)
+      data => {
+        this.loadingSpinner.dismiss();
+        this.articles = data;
+      },
+      error => {
+        this.loadingSpinner.dismiss();
+        this.presentErrorAlert(error);
+      },
     )
   }
 
@@ -37,6 +49,19 @@ export class UnreadArticlesComponent implements OnInit {
     });
 
     await alert.present();
+  }
+
+  markAllAsRead() {
+    this.articleList.markAllAsRead();
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      cssClass: 'my-custom-class',
+      message: 'Getting unread articles...',
+    });
+    await loading.present();
+    this.loadingSpinner = loading;
   }
 
 }

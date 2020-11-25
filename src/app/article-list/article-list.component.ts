@@ -36,4 +36,8 @@ export class ArticleListComponent {
     );
   }
 
+  markAllAsRead() {
+    console.log(this.items.map(e => e.id))
+  }
+
 }
