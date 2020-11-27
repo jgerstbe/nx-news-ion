@@ -18,6 +18,8 @@ export class ArticleListComponent {
   ngOnChanges(changes:SimpleChanges) {
     if (changes.items && changes.items.currentValue && changes.items.currentValue.length > 0) {
       this.hasItems = true;
+    } else {
+      this.hasItems = false;
     }
   }
 

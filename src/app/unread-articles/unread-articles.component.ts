@@ -52,16 +52,20 @@ export class UnreadArticlesComponent implements OnInit {
   }
 
   markAllAsRead() {
+    this.presentLoading('Marking articles as read.')
     this.articleList.markAllAsRead().subscribe(
-      success => { this.loadUnread() },
+      success => {
+        this.loadingSpinner.dismiss();
+        this.loadUnread();
+      },
       error => console.error('Could not mark multiple items as read.')
     );
   }
 
-  async presentLoading() {
+  async presentLoading(message: string = "Getting unread articles...") {
     const loading = await this.loadingController.create({
       cssClass: 'my-custom-class',
-      message: 'Getting unread articles...',
+      message: message,
     });
     await loading.present();
     this.loadingSpinner = loading;
