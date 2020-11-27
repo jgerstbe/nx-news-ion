@@ -17,8 +17,14 @@
   </ion-virtual-scroll>
 </ng-container>
 
+
+
+<div *ngIf="!hasItems">
+  <ion-text>No articles.</ion-text>
+</div>
+
 <!-- Skeleton screen -->
-<ion-list *ngIf="!hasItems">
+<!-- <ion-list *ngIf="!hasItems">
   <ion-item>
     <ion-avatar slot="start">
       <ion-skeleton-text animated></ion-skeleton-text>
@@ -249,4 +255,4 @@
       </p>
     </ion-label>
   </ion-item>
-</ion-list>
+</ion-list> -->

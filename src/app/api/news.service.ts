@@ -70,4 +70,12 @@ export class NewsService {
         });
     }
 
+    markMultipleAsRead(itemIds: number[]) {
+        return this.http.put(`${this.baseUrl}items/read/multiple`, {
+            items: itemIds
+        }, {
+            headers: this.getHeaders()
+        });
+    }
+
 }

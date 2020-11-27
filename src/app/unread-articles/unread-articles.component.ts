@@ -52,7 +52,10 @@ export class UnreadArticlesComponent implements OnInit {
   }
 
   markAllAsRead() {
-    this.articleList.markAllAsRead();
+    this.articleList.markAllAsRead().subscribe(
+      success => { this.loadUnread() },
+      error => console.error('Could not mark multiple items as read.')
+    );
   }
 
   async presentLoading() {
