@@ -27,7 +27,7 @@ export class UnreadArticlesComponent implements OnInit {
 
   loadUnread() {
     this.presentLoading();
-    this.newsService.getUnreadArticles().subscribe(
+    this.newsService.getUnreadItems().subscribe(
       data => {
         this.loadingSpinner.dismiss();
         this.articles = data;

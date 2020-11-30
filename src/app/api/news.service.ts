@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { environment } from '../../environments/environment';
 import { map } from 'rxjs/operators';
 import * as sortBy from 'lodash.sortby';
 import { Observable } from 'rxjs';
@@ -46,7 +45,21 @@ export class NewsService {
         return new HttpHeaders().set('Authorization', `Basic ${this.authCredentials}`);
     }
 
-    getUnreadArticles():Observable<Article[]> {
+    getVersion() {
+        return this.http.get(`${this.baseUrl}version`, {
+            headers: this.getHeaders()
+        });
+    }
+
+    getStatus() {
+        return this.http.get(`${this.baseUrl}status`, {
+            headers: this.getHeaders()
+        });
+    }
+
+    // items - item.type (Feed: 0, Folder: 1, Starred: 2, All: 3)
+
+    getUnreadItems():Observable<Article[]> {
         return this.http.get(`${this.baseUrl}items?type=3&getRead=false&batchSize=-1`, {
             headers: this.getHeaders()
         }).pipe(
@@ -58,21 +71,159 @@ export class NewsService {
         );
     }
 
-    markAsRead(itemId: number) {
+    markItemAsRead(itemId: number) {
         return this.http.put(`${this.baseUrl}items/${itemId}/read`, null, {
             headers: this.getHeaders()
         });
     }
 
-    markAsUnread(itemId: number) {
+    markItemAsUnread(itemId: number) {
         return this.http.put(`${this.baseUrl}items/${itemId}/unread`, null, {
             headers: this.getHeaders()
         });
     }
 
-    markMultipleAsRead(itemIds: number[]) {
+    markItemsAsRead(itemIds: number[]) {
         return this.http.put(`${this.baseUrl}items/read/multiple`, {
             items: itemIds
+        }, {
+            headers: this.getHeaders()
+        });
+    }
+
+    markItemsAsUnread(itemIds: number[]) {
+        return this.http.put(`${this.baseUrl}items/unread/multiple`, {
+            items: itemIds
+        }, {
+            headers: this.getHeaders()
+        });
+    }
+
+    markItemAsStarred(feedId: number, guid: string) {
+        return this.http.put(`${this.baseUrl}items/${feedId}/${guid}/star`, null, {
+            headers: this.getHeaders()
+        });
+    }
+
+    markItemAsUnstarred(feedId: number, guid: string) {
+        return this.http.put(`${this.baseUrl}items/${feedId}/${guid}/unstar`, null, {
+            headers: this.getHeaders()
+        });
+    }
+
+    markItemsAsStarred(items: [{feedId: number, guidHash: string}]) {
+        return this.http.put(`${this.baseUrl}items/star/multiple`, {
+            items: items
+        }, {
+            headers: this.getHeaders()
+        });
+    }
+
+    markItemsAsUnstarred(items: [{feedId: number, guidHash: string}]) {
+        return this.http.put(`${this.baseUrl}items/unstar/multiple`, {
+            items: items
+        }, {
+            headers: this.getHeaders()
+        });
+    }
+
+    markAllItemsAsRead(newestItemId: number) {
+        return this.http.put(`${this.baseUrl}items/read`, {
+            newestItemId: newestItemId
+        }, {
+            headers: this.getHeaders()
+        });
+
+    }
+
+    getUpdatedItems(lastModified: number, type: number = 3) {
+        return this.http.get(`${this.baseUrl}items/updated?lastModified=${lastModified}&type=${type}`,{
+            headers: this.getHeaders()
+        });
+    }
+
+    // folders
+    getFolders() {
+        return this.http.get(`${this.baseUrl}folders`,{
+            headers: this.getHeaders()
+        });
+    }
+
+    createFolder(name: string) {
+        return this.http.post(`${this.baseUrl}folders`, {
+            name: name
+        }, {
+            headers: this.getHeaders()
+        });
+    }
+
+    deleteFolder(id: number) {
+        return this.http.delete(`${this.baseUrl}folders/${id}`,{
+            headers: this.getHeaders()
+        });
+    }
+
+    renameFolder(id: number, name:string) {
+        return this.http.put(`${this.baseUrl}folders/${id}`, {
+            name: name
+        }, {
+            headers: this.getHeaders()
+        });
+    }
+
+    markFolderAsRead(folderId: number, newesItemId: number) {
+        // mark all items read lower than equal that id
+        // this is mean to prevent marking items as read which the client/user does not yet know of
+        return this.http.put(`${this.baseUrl}folders/${folderId}/read`, {
+            newestItemId: newesItemId
+        }, {
+            headers: this.getHeaders()
+        });
+    }
+
+    // feeds
+    getFeeds() {
+        return this.http.get(`${this.baseUrl}feeds`,{
+            headers: this.getHeaders()
+        });
+    }
+
+    createFeed(url: string, folderId: number = null) {
+        return this.http.post(`${this.baseUrl}feeds`, {
+            url: url,
+            folderId: folderId
+        }, {
+            headers: this.getHeaders()
+        });
+    }
+
+    deleteFeed(id: number) {
+        return this.http.delete(`${this.baseUrl}feed/${id}`,{
+            headers: this.getHeaders()
+        });
+    }
+
+    moveFeedToFolder(feedId: number, folderId: number = null) {
+        return this.http.put(`${this.baseUrl}feeds/${feedId}/move`, {
+            folderId: folderId
+        }, {
+            headers: this.getHeaders()
+        });
+    }
+
+    renameFeed(feedId: number, name: string) {
+        return this.http.put(`${this.baseUrl}feeds/${feedId}`, {
+            name: name
+        }, {
+            headers: this.getHeaders()
+        });
+    }
+    
+    markFeedAsRead(feedId: number, newesItemId: number) {
+        // mark all items read lower than equal that id
+        // this is mean to prevent marking items as read which the client/user does not yet know of
+        return this.http.put(`${this.baseUrl}feeds/${feedId}/read`, {
+            newestItemId: newesItemId
         }, {
             headers: this.getHeaders()
         });

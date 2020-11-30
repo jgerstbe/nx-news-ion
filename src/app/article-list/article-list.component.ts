@@ -32,14 +32,14 @@ export class ArticleListComponent {
   }
 
   marAsRead(itemId: number) {
-    this.newsService.markAsRead(itemId).subscribe(
+    this.newsService.markItemAsRead(itemId).subscribe(
       success => { },
       error => console.error('Could not read item', itemId)
     );
   }
 
   markAllAsRead() {
-    return this.newsService.markMultipleAsRead(this.items.map(e => e.id));
+    return this.newsService.markItemsAsRead(this.items.map(e => e.id));
   }
 
 }
