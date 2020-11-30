@@ -46,12 +46,12 @@ export class ArticleListComponent {
     // assuming the api call will succeed
     item.unread = !item.unread;
     if (item.unread) {
-      this.newsService.markItemAsRead(item.id).subscribe(
+      this.newsService.markItemAsUnread(item.id).subscribe(
         success => {},
         error => item.unread = !item.unread
       );
     } else {
-      this.newsService.markItemAsUnread(item.id).subscribe(
+      this.newsService.markItemAsRead(item.id).subscribe(
         success => {},
         error => item.unread = !item.unread
       );
@@ -62,12 +62,12 @@ export class ArticleListComponent {
     // assuming the api call will succeed
     item.starred = !item.starred;
     if (item.starred) {
-      this.newsService.markItemAsUnstarred(item.feedId, item.guid).subscribe(
+      this.newsService.markItemAsStarred(item.feedId, item.guidHash).subscribe(
         success => {},
         error => item.starred = !item.starred
       );
     } else {
-      this.newsService.markItemAsUnread(item.id).subscribe(
+      this.newsService.markItemAsUnstarred(item.feedId, item.guidHash).subscribe(
         success => {},
         error => item.unread = !item.unread
       );
