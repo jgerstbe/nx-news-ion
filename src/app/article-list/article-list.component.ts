@@ -1,5 +1,5 @@
 import { Component, Input, SimpleChanges } from '@angular/core';
-import { Article } from '../api/article';
+import { Item } from '../api/item';
 import { NewsService } from '../api/news.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { NewsService } from '../api/news.service';
   styleUrls: ['./article-list.component.scss'],
 })
 export class ArticleListComponent {
-  @Input('items') items: Article[] = [];
+  @Input('items') items: Item[] = [];
   hasItems: boolean = false;
 
   constructor(

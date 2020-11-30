@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NewsService } from '../api/news.service';
 import { AlertController } from '@ionic/angular';
-import { Article } from '../api/article';
+import { Item } from '../api/item';
 import { ArticleListComponent } from '../article-list/article-list.component';
 import { LoadingController } from '@ionic/angular';
 
@@ -11,7 +11,7 @@ import { LoadingController } from '@ionic/angular';
   styleUrls: ['./unread-articles.component.scss'],
 })
 export class UnreadArticlesComponent implements OnInit {
-  articles: Article[] = [];
+  articles: Item[] = [];
   @ViewChild('articleList', { static: false}) articleList: ArticleListComponent;
   loadingSpinner: HTMLIonLoadingElement;
 

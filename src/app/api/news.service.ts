@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import * as sortBy from 'lodash.sortby';
 import { Observable } from 'rxjs';
-import { Article } from './article';
+import { Item } from './item';
 import { Router } from '@angular/router';
 
 
@@ -59,7 +59,7 @@ export class NewsService {
 
     // items - item.type (Feed: 0, Folder: 1, Starred: 2, All: 3)
 
-    getUnreadItems():Observable<Article[]> {
+    getUnreadItems():Observable<Item[]> {
         return this.http.get(`${this.baseUrl}items?type=3&getRead=false&batchSize=-1`, {
             headers: this.getHeaders()
         }).pipe(
@@ -99,14 +99,14 @@ export class NewsService {
         });
     }
 
-    markItemAsStarred(feedId: number, guid: string) {
-        return this.http.put(`${this.baseUrl}items/${feedId}/${guid}/star`, null, {
+    markItemAsStarred(feedId: number, guidHash: string) {
+        return this.http.put(`${this.baseUrl}items/${feedId}/${guidHash}/star`, null, {
             headers: this.getHeaders()
         });
     }
 
-    markItemAsUnstarred(feedId: number, guid: string) {
-        return this.http.put(`${this.baseUrl}items/${feedId}/${guid}/unstar`, null, {
+    markItemAsUnstarred(feedId: number, guidHash: string) {
+        return this.http.put(`${this.baseUrl}items/${feedId}/${guidHash}/unstar`, null, {
             headers: this.getHeaders()
         });
     }
