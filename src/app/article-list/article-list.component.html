@@ -1,19 +1,36 @@
 <ng-container *ngIf="hasItems">
   <ion-virtual-scroll [items]="items">
-    <ion-item *virtualItem="let item" (click)="openInNewTab(item.url, item.id); item.clicked=true;">
-      <ion-avatar slot="start">
-        <ion-img [src]="item.mediaThumbnail ? item.mediaThumbnail : 'https://'+item.url.split('/')[2]+'/favicon.ico'"></ion-img>
-      </ion-avatar>
-      <ion-grid style="max-width: 100%;">
-        <ion-row>
-          <ion-label style="white-space: normal;" [ngClass]="{'text-muted': item.clicked}">{{ item.title }}</ion-label>
-        </ion-row>
-        <ion-row>
-          <ion-note style="white-space: nowrap;">{{ item.url }}</ion-note>
-          <ion-note>{{ (item.pubDate*1000) | date : 'HH:mm - dd.MM.yy' }}</ion-note>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
+    <ion-item-sliding *virtualItem="let item">
+      <ion-item-options side="start">
+        <ion-item-option (click)="toggleFAvourite(item)">
+          <ion-icon *ngIf="item.starred" name="star"></ion-icon>
+          <ion-icon *ngIf="!item.starred" name="star-outline"></ion-icon>
+        </ion-item-option>
+        <!-- <ion-item-option color="danger" (click)="share(item)">Share</ion-item-option> -->
+      </ion-item-options>
+  
+      <ion-item (click)="openInNewTab(item.url, item.id); item.unread=false;">
+        <ion-avatar slot="start">
+          <ion-img [src]="item.mediaThumbnail ? item.mediaThumbnail : 'https://'+item.url.split('/')[2]+'/favicon.ico'"></ion-img>
+        </ion-avatar>
+        <ion-grid style="max-width: 100%;">
+          <ion-row>
+            <ion-label style="white-space: normal;" [ngClass]="{'text-muted': !item.unread}">{{ item.title }}</ion-label>
+          </ion-row>
+          <ion-row>
+            <ion-note style="white-space: nowrap;">{{ item.url }}</ion-note>
+            <ion-note>{{ (item.pubDate*1000) | date : 'HH:mm - dd.MM.yy' }}</ion-note>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+  
+      <ion-item-options side="end">
+        <ion-item-option (click)="toggleRead(item)">
+          <ion-icon *ngIf="item.unread" name="checkmark-done-circle-outline"></ion-icon>
+          <ion-icon *ngIf="!item.unread" name="ellipse-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-virtual-scroll>
 </ng-container>
 

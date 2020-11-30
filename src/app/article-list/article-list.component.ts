@@ -42,4 +42,21 @@ export class ArticleListComponent {
     return this.newsService.markItemsAsRead(this.items.map(e => e.id));
   }
 
+  toggleRead(item: Item) {
+    // assuming the api call will succeed
+    item.unread = !item.unread;
+    if (item.unread) {
+      this.newsService.markItemAsRead(item.id).subscribe(
+        success => {},
+        error => item.unread = !item.unread
+      );
+    } else {
+      this.newsService.markItemAsUnread(item.id).subscribe(
+        success => {},
+        error => item.unread = !item.unread
+      );
+    }
+
+  }
+
 }
