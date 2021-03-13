@@ -2,9 +2,6 @@
 
 A simple news reader for your nextcloud news instance.
 
-![Nx News](https://news.herbert.jgerstbe.de/assets/img/nx-news-ion.png)
-
-
 ## Features:
 - Load unread articles
 - mark articles as read
