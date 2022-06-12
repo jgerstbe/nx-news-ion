@@ -1,8 +1,9 @@
 <ng-container *ngIf="hasItems">
   <ion-virtual-scroll [items]="items">
     <ion-item-sliding *virtualItem="let item">
+      <span style="display:none;" class="itemScrollSpy" [id]="item.id"></span>
       <ion-item-options side="start">
-        <ion-item-option (click)="toggleFAvourite(item)">
+        <ion-item-option (click)="toggleFavorite(item)">
           <ion-icon *ngIf="item.starred" name="star"></ion-icon>
           <ion-icon *ngIf="!item.starred" name="star-outline"></ion-icon>
         </ion-item-option>

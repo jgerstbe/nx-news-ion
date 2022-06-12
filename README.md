@@ -5,7 +5,7 @@ A simple news reader for your nextcloud news instance.
 ## Features:
 - Load unread articles
 - mark articles as read
-- credtials are saved via localStorage at the moment *do not use on untrusted devices*
+- credentials are saved via localStorage at the moment *do not use on untrusted devices*
 
 
 ## Todo:
